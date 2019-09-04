@@ -1,0 +1,38 @@
+mov r1,1	//r1=i
+mov r3,1 	//r3=j
+mov r2,0	//counter=0
+b .loop1
+
+.loop1:
+	mul r5,r3,r3	
+	mul r5,r5,r3		//r5=j*j*j
+	add r4,r3,1		//k=j+1
+	cmp r1,r5	
+	bgt .loop2		//if i>j goto loop2
+	add r1,r1,1		//else i=i+1, j=1, counter=0 and goto .loop1
+	mov r3,1
+	mov r2,0
+	b .loop1
+
+.loop2:
+	mul r6,r4,r4;		//r6=k*k*k
+	mul r6,r4,r6
+	cmp r1,r6		//if r6<r1 goto .loop3
+	bgt .loop3
+	add r3,r3,1		//else j=j+1 and goto .loop1
+	b .loop1
+
+.loop3
+	add r7,r6,r5		//r7=r6+r5, i.e.r7=j^3+k^3
+	cmp r1,r7
+	beq .block1		//if r7==r1 goto .block1
+	add r4,r4,1		//else k=k+1 and goto .loop2
+	b .loop2
+
+
+.block1
+	add r2,r2,1		//counter=cunter+1
+	add r3,r3,1		//j=j+1
+	cmp 2,r2		
+	bgt .loop1		//if(2>counter) goto .loop1 else exit
+	exit
